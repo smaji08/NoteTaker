@@ -1,0 +1,22 @@
+{
+  "name": "notetaker",
+  "version": "1.0.0",
+  "description": " An application that can be used to write, save, and delete notes which will an express backend and save and retrieve note data from a JSON file.",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/smaji08/NoteTaker.git"
+  },
+  "author": "Augustine Stella Maria",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/smaji08/NoteTaker/issues"
+  },
+  "homepage": "https://github.com/smaji08/NoteTaker#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
