@@ -15,15 +15,14 @@ var db = fs.readFileSync("./db/db.json","utf-8");
 db? db = JSON.parse(db):db=[];
 
 //API Routes
-app.get("/api/notes", function(req, res) {
+app.get("/api/notes", (req, res) => {
   return res.send(db);
 });
 
-app.post("/api/notes", function(req, res) {
-  var id = !db.length? 0: parseInt(db[db.length-1].id);
+app.post("/api/notes", (req, res) => {
+  var id = !db.length? 0: db[db.length-1].id;
   var body = req.body;
-  id++;
-  var idElem = {"id":id.toString()};
+  var idElem = {"id":++id};
 
   body = {...body, ...idElem};
   db.push(body);
@@ -31,8 +30,8 @@ app.post("/api/notes", function(req, res) {
   res.json(true);
 });
 
-app.delete("/api/notes/:id", function(req,res){
-  var selected = req.params.id;
+app.delete("/api/notes/:id", (req,res) => {
+  var selected = parseInt(req.params.id);
 
   for (var i = 0; i < db.length; i++) {
     if (selected === db[i].id) {
@@ -46,15 +45,15 @@ app.delete("/api/notes/:id", function(req,res){
 
 
 //HTML routes
-app.get("/notes", function(req, res) {
+app.get("/notes", (req, res) => {
   res.sendFile(path.join(__dirname, "./public/notes.html"));
 });
 
-app.get("*", function(req, res) {
+app.get("*", (req, res) => {
     res.sendFile(path.join(__dirname, "./public/index.html"));
 });
 
 //Listening to Server
-app.listen(PORT, function() {
+app.listen(PORT, () =>{
   console.log("App listening on PORT: http://localhost:" + PORT);
 });
