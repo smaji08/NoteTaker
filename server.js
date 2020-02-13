@@ -1,6 +1,7 @@
 var express = require("express");
 var path = require("path");
 var fs = require("fs");
+var performance = require("performance-now");
 
 const app = express();
 const PORT = process.env.PORT || 8080;
@@ -20,18 +21,17 @@ app.get("/api/notes", (req, res) => {
 });
 
 app.post("/api/notes", (req, res) => {
-  var id = !db.length? 0: db[db.length-1].id;
   var body = req.body;
-  var idElem = {"id":++id};
+  var idElem = {"id":performance()};
 
-  body = {...body, ...idElem};
+  body = {...idElem, ...body};
   db.push(body);
   fs.writeFileSync("./db/db.json", JSON.stringify(db), "utf-8");
   res.json(true);
 });
 
 app.delete("/api/notes/:id", (req,res) => {
-  var selected = parseInt(req.params.id);
+  var selected = parseFloat(req.params.id);
 
   for (var i = 0; i < db.length; i++) {
     if (selected === db[i].id) {
@@ -54,6 +54,4 @@ app.get("*", (req, res) => {
 });
 
 //Listening to Server
-app.listen(PORT, () =>{
-  console.log("App listening on PORT: http://localhost:" + PORT);
-});
+app.listen(PORT);
