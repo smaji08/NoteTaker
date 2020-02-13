@@ -1,7 +1,7 @@
-var express = require("express");
-var path = require("path");
-var fs = require("fs");
-var performance = require("performance-now");
+const express = require("express");
+const path = require("path");
+const fs = require("fs");
+const performance = require("performance-now");
 
 const app = express();
 const PORT = process.env.PORT || 8080;
@@ -12,7 +12,7 @@ app.use(express.json());
 app.use(express.static("public"));
 
 //reading the db.json
-var db = fs.readFileSync("./db/db.json","utf-8");
+let db = fs.readFileSync("./db/db.json","utf-8");
 db? db = JSON.parse(db):db=[];
 
 //API Routes
@@ -21,9 +21,9 @@ app.get("/api/notes", (req, res) => {
 });
 
 app.post("/api/notes", (req, res) => {
-  var body = req.body;
-  var idElem = {"id":performance()};
-
+  let body = req.body;
+  let idElem = {"id":performance()};
+  
   body = {...idElem, ...body};
   db.push(body);
   fs.writeFileSync("./db/db.json", JSON.stringify(db), "utf-8");
@@ -31,18 +31,14 @@ app.post("/api/notes", (req, res) => {
 });
 
 app.delete("/api/notes/:id", (req,res) => {
-  var selected = parseFloat(req.params.id);
-
-  for (var i = 0; i < db.length; i++) {
-    if (selected === db[i].id) {
-      db.splice(i,1);
-      fs.writeFileSync("./db/db.json", JSON.stringify(db), "utf-8");
-      return res.json(true);
-    }
-  }
-  return res.json(false);
+  const selected = db.find(note => note.id === parseFloat(req.params.id));
+  if(!selected) return res.status(404).send("The note not found");
+  
+  const index = db.indexOf(selected);
+  db.splice(index,1);
+  fs.writeFileSync("./db/db.json", JSON.stringify(db), "utf-8");
+  return res.json(true);
 });
-
 
 //HTML routes
 app.get("/notes", (req, res) => {
