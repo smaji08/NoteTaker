@@ -18,7 +18,7 @@
   },
   "homepage": "https://github.com/smaji08/NoteTaker#readme",
   "dependencies": {
-    "express": "^4.17.1",
+    "express": "^4.17.3",
     "performance-now": "^2.1.0"
   }
 }
